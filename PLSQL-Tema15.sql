@@ -200,21 +200,372 @@ SET SERVEROUTPUT ON
 DECLARE
     v_nombre varchar(100);
     v_precio number;
+    v_id_fabricante number;
+    v_id number:=1;
+BEGIN
+/**
+Para recorrer el while tengo que prestar atencion en un contador para ir registro por registro
+*/
+    SELECT id_fabricante, nombre, precio into v_id_fabricante, v_nombre, v_precio from producto where id=v_id;
+    WHILE (v_id_fabricante is not null) LOOP
+        DBMS_OUTPUT.PUT_LINE('El producto '||v_nombre||' su precio es: '||v_precio);
+        v_id:=v_id+1;
+        SELECT id_fabricante, nombre, precio into v_id_fabricante, v_nombre, v_precio from producto where id=v_id;
+    END LOOP;
+    
+END;
+
+/*
+Ejercicio 9: Bucles con FOR
+Realizar un bucle que vaya consultando todos los productos desde el 1 hasta el 14 e imprimir el siguiente mensaje:
+El producto v_nombre cuesta v_precio€
+
+*/
+SET SERVEROUTPUT ON
+DECLARE
+    v_nombre varchar(100);
+    v_precio number;
+    v_id number:=1;
 BEGIN
     
-    SELECT 
+    FOR v_id IN 1..9 LOOP
+        SELECT NOMBRE, PRECIO INTO V_NOMBRE, V_PRECIO FROM PRODUCTO WHERE ID=V_ID;
+        DBMS_OUTPUT.PUT_LINE('El producto '||v_nombre||' su precio es: '||v_precio);
+    END LOOP;
     
-    WHILE DO
     
 END;
 
 
+/*
+Ejercicio 10: Bucle sencillo LOOP
+Repetir ejercicio 15.8 con un bucle sencillo LOOP.
+Realizar un bucle que vaya consultando todos los productos desde el 1 hasta que 
+encuentre un producto sin fabricante. En cada iteración se deberá imprimir el siguiente mensaje:
+El producto v_nombre cuesta v_precio€
+*/
+SET SERVEROUTPUT ON
+DECLARE
+    v_nombre varchar(100);
+    v_precio number;
+    v_id_fabricante number;
+    v_id number:=1;
+BEGIN
+
+/*-----------------------BATERIA DE EJERCICIOS -----------------------*/
 
 
+/**
+Para recorrer el while tengo que prestar atencion en un contador para ir registro por registro
+*/
+    SELECT id_fabricante, nombre, precio into v_id_fabricante, v_nombre, v_precio from producto where id=v_id;
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('El producto '||v_nombre||' su precio es: '||v_precio);
+        v_id:=v_id+1;
+        SELECT id_fabricante, nombre, precio into v_id_fabricante, v_nombre, v_precio from producto where id=v_id;
+        IF V_ID_FABRICANTE IS NULL THEN 
+            EXIT;
+        END IF;
+        
+    END LOOP;
+    
+END;
+
+/*
+Declarar una variable ‘a’ y una variable ‘b’. Ambas numéricas y constantes con valores 10 y 20 respectivamente.
+Sumar ambos valores en una variable llamada “result” y sacarla por consola.
+Sacar por consola el valor más alto de las dos variables, usando una estructura IF.
+
+*/
+SET SERVEROUTPUT ON
+DECLARE
+    a number :=10;
+    b number :=20;
+    reult number:=0;
+BEGIN
+    reult:=a+b;
+    DBMS_OUTPUT.PUT_LINE(reult);
+    if  (a>b)then
+        DBMS_OUTPUT.PUT_LINE(' a es mayor que b');
+    elsif(b>a) then 
+        DBMS_OUTPUT.PUT_LINE(' b es mayor que a');
+    else
+        DBMS_OUTPUT.PUT_LINE('tienen el mismo valor');
+    end if;
+END;
+
+/*Solicita dos números por pantalla. Muestra por consola la suma, la resta,
+la multiplicación, la potencia y la división de ambos números. Usa la siguiente plantilla:
+La suma de __ y __ es:
+La resta de __ y __ es:
+La multiplicación de __ y __ es:
+El cociente de __ entre __ da:
+*/
+
+SET SERVEROUTPUT ON
+DECLARE
+    num1 number:=&num1;
+    num2 number:=&num2;
+    suma number;
+    resta number;
+    divi number;
+    multi number;
+
+BEGIN
+    
+    suma:=num1+num2;
+    resta:=num1-num2;
+    divi:=num1/num2;
+    multi:=num1*num2;
+    
+    /*SI O SI ENTRE PARENTESIS SINO SE PONE LA VARIABLE*/
+        
+    DBMS_OUTPUT.PUT_LINE('La suma de '||num1||' y '||num2||' es: '||suma);
+    DBMS_OUTPUT.PUT_LINE('La resta de '||num1||' y '||num2||' es:'||resta);
+    DBMS_OUTPUT.PUT_LINE('La multiplicación de '||num1||' y '||num2||'  es:'||multi);
+    DBMS_OUTPUT.PUT_LINE('El cociente de '||num1||'  entre'||num2||'da:'||divi);
+END;
+
+/*Crea un algoritmo que calcule la media de 5 números que se le pasan por pantalla.*/
+
+SET SERVEROUTPUT ON
+DECLARE
+    num1 number:=&num1;
+    num2 number:=&num2;
+    num3 number:=&num3;
+    num4 number:=&num4;
+    num5 number:=&num5;
+BEGIN
+     DBMS_OUTPUT.PUT_LINE('La media de los numeros '||num1||' - '||num2||'
+     - '||num3||' - '||num4||' - '||num5||' es: '||((num1+num2+num3+num4+num5)/5));
+   
+END;
 
 
+/*
+Pedir por teclado un número entero de 4 cifras.
+Devolver un mensaje si el número tiene más o menos de 4 cifras.
+Mostrar cada una de sus cifras (una debajo de otra).
+Crear un nuevo número con las cifras del primero pero al revés.
+*/
+SET SERVEROUTPUT ON
+DECLARE
+    numero number:=&num1;
+BEGIN
+    
+ /*   DBMS_OUTPUT.PUT_LINE('Devolver un mensaje si el número tiene más o menos de 4 cifras.');*/
+    IF (numero <= 999 OR numero >= 10000) THEN
+        DBMS_OUTPUT.PUT_LINE('Numero incorrecto');
+        ELSE
+        DBMS_OUTPUT.PUT_LINE('Unidades: ' || SUBSTR(numero,4));
+        DBMS_OUTPUT.PUT_LINE('Decenas: ' || SUBSTR(numero,3,1));
+        DBMS_OUTPUT.PUT_LINE('Centenas: ' || SUBSTR(numero,2,1));
+        DBMS_OUTPUT.PUT_LINE('Unidades de millar: ' || SUBSTR(numero,1,1));
+        DBMS_OUTPUT.PUT_LINE('Numero al rev s: ' || SUBSTR(numero,4)
+        || SUBSTR(numero,3,1) || SUBSTR(numero,2,1) || SUBSTR(numero,1,1));
+    END IF;
+    
+END;
+
+/*OTRA OPCION*/
+
+SET SERVEROUTPUT ON
+DECLARE
+    numero number:=&num1;
+    numero_total number:=4;
+    reserv number;
+
+BEGIN
+    
+ /*   DBMS_OUTPUT.PUT_LINE('Devolver un mensaje si el número tiene más o menos de 4 cifras.');*/
+    IF (length(numero)<>numero_total) THEN
+        DBMS_OUTPUT.PUT_LINE('Numero incorrecto');
+        ELSE
+        FOR i in  1..numero_total LOOP
+            DBMS_OUTPUT.PUT_LINE('Unidades: ' || SUBSTR(numero,i,1));
+            reserv:=SUBSTR(numero,i,1)||reserv;
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('Numero al reves: '||reserv);
+    END IF;
+    
+END;
+
+/*Solicitar que el usuario introduzca una clave dos veces. 
+Mostrar un mensaje indicando si las claves son iguales o si son diferentes.
+*/
+
+SET SERVEROUTPUT ON
+DECLARE
+    clave1 constant number:=&clave1;
+    clave2 constant number:=&clave2;
+BEGIN
+    
+ /*   DBMS_OUTPUT.PUT_LINE('Devolver un mensaje si el número tiene más o menos de 4 cifras.');*/
+    IF (clave1=clave2) THEN
+        DBMS_OUTPUT.PUT_LINE('Las Claves son iguales');
+        ELSE
+        
+            DBMS_OUTPUT.PUT_LINE('Las claves son diferentes ');
+     
+    END IF;
+    
+END;
+
+/*
+Realiza un programa que dada una cantidad de dinero en Euros, realice un desglose en billetes y monedas. Ej:
+
+Los billetes disponibles son de 500, 200, 100, 50, 20, 10 y 5€ y las monedas de 2 y 1€.
+
+    */
+    SET SERVEROUTPUT ON
+    DECLARE
+        DINERO NUMBER:=&DINERO;
+        QUIN NUMBER:=0;
+        DOSC NUMBER:=0;
+        CIEN NUMBER:=0;
+        CIN NUMBER:=0;
+        VEI NUMBER:=0;
+        DIE NUMBER:=0;
+        CINCO NUMBER:=0;
+        DOS NUMBER:=0;
+        UNO NUMBER:=0;
+    BEGIN
+        
+        WHILE (DINERO>0) LOOP     
+            IF (DINERO>=500) THEN
+                DINERO:=DINERO-500;
+                QUIN:=QUIN+1;
+            ELSIF (DINERO>=200) THEN
+                DINERO:=DINERO-200;
+                DOSC:=DOSC+1;
+            ELSIF (DINERO>=100) THEN
+                DINERO:=DINERO-100;
+                CIEN:=CIEN+1;
+            ELSIF (DINERO>=50) THEN
+                DINERO:=DINERO-50;
+                CIN:=CIN+1;
+            ELSIF (DINERO>=20) THEN
+                DINERO:=DINERO-20;
+                VEI:=VEI+1;
+            ELSIF (DINERO>=10) THEN
+                DINERO:=DINERO-10;
+                DIE:=DIE+1;
+            ELSIF (DINERO>=5) THEN
+                DINERO:=DINERO-5;
+                CINCO:=CINCO+1;
+            ELSIF (DINERO>=2) THEN
+                DINERO:=DINERO-2;
+                DOS:=DOS+1;
+            ELSIF (DINERO>=1) THEN
+                DINERO:=DINERO-1;
+                UNO:=UNO+1;
+            END IF;
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('EL DESCGLOSE OBTENIDO ES: ');
+        DBMS_OUTPUT.PUT_LINE(QUIN||' BILLETES DE 500');
+        DBMS_OUTPUT.PUT_LINE(DOSC||' BILLETES DE 200');
+        DBMS_OUTPUT.PUT_LINE(CIEN||' BILLETES DE 100');
+        DBMS_OUTPUT.PUT_LINE(CIN|| ' BILLETES DE 50');
+        DBMS_OUTPUT.PUT_LINE(VEI||' BILLETES DE 20');
+        DBMS_OUTPUT.PUT_LINE(DIE||' BILLETES DE 10');
+        DBMS_OUTPUT.PUT_LINE(CINCO||' BILLETES DE 5');
+        DBMS_OUTPUT.PUT_LINE(DOS ||' MONEDAS DE 2');
+        DBMS_OUTPUT.PUT_LINE(UNO ||' MONEDAS DE 1');
+END;
+    
+/*Escribe un programa que lea de teclado 2 números enteros y saque en pantalla todos los números que estén entre ellos.*/
+ SET SERVEROUTPUT ON
+ DECLARE
+    NUM1 NUMBER:=&NUM1;
+    NUM2 NUMBER:=&NUM2;
+ BEGIN
+    IF (NUM1<=NUM2)THEN
+        FOR I IN NUM1..NUM2 LOOP
+            DBMS_OUTPUT.PUT_LINE(I);
+        END LOOP;
+    ELSE 
+        FOR I IN NUM2..NUM1 LOOP
+            DBMS_OUTPUT.PUT_LINE(I);
+        END LOOP;
+    END IF;    
+ END;
+ 
+ /*Modifica el ejercicio 7 para que solo escriba en pantalla los números pares del intervalo
+*/
+ SET SERVEROUTPUT ON
+ DECLARE
+    NUM1 NUMBER:=&NUM1;
+    NUM2 NUMBER:=&NUM2;
+ BEGIN
+    IF (NUM1<=NUM2)THEN
+        FOR I IN NUM1..NUM2 LOOP
+            IF (MOD (I,2)=0)THEN 
+                DBMS_OUTPUT.PUT_LINE(I);
+            END IF;    
+        END LOOP;
+    ELSE 
+        FOR I IN NUM2..NUM1 LOOP
+            IF (MOD (I,2)=0)THEN 
+                DBMS_OUTPUT.PUT_LINE(I);
+            END IF;
+        END LOOP;
+    END IF;    
+ END;
+
+/*Diseña un algoritmo que calcule el factorial de un número pedido por teclado. 
+El factorial de un número es la multiplicación desde el 1 hasta ese número.*/
+
+DECLARE
+    NUM1 NUMBER :=&NUM1;
+    FACTORIAL NUMBER:=1;
+BEGIN
+    FOR I IN 1..NUM1 LOOP
+        FACTORIAL:=FACTORIAL*I;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('EL FACTORIAL DE '||NUM1||' ES: ' ||FACTORIAL);
+END;
 
 
+/*
+Realizar una sentencia SELECT que obtenga el nombre del producto con identificador 5 
+y lo asigne a una variable llamada “v_nombre”. Sacar el nombre por consola.
+*/    
+
+DECLARE
+    V_NOMBRE VARCHAR(100);
+BEGIN 
+    SELECT NOMBRE INTO V_NOMBRE FROM PRODUCTO WHERE ID=5;
+    DBMS_OUTPUT.PUT_LINE(V_NOMBRE);
+END;
+
+
+/*
+Realizar una búsqueda de productos según un identificador que se introduzca por pantalla. 
+Sacar su nombre y el nombre de su fabricante. Se deberá imprimir un mensaje:
+El producto v_nombre pertenece al fabricante v_fabricante.
+En caso de que no tenga fabricante el mensaje deberá ser:
+El producto v_nombre no tiene fabricante.
+*/
+
+DECLARE
+    V_NOMBRE VARCHAR(100);
+    V_FABRICANTE VARCHAR(100);
+    NUM1 NUMBER :=&NUM1;
+    NUM2 NUMBER;
+BEGIN 
+    SELECT NOMBRE, ID_FABRICANTE INTO V_NOMBRE, NUM2 FROM PRODUCTO WHERE ID=NUM1;
+    
+    
+    IF NUM2 IS NOT NULL THEN 
+        SELECT NOMBRE INTO V_FABRICANTE FROM FABRICANTE WHERE ID=NUM2;
+        DBMS_OUTPUT.PUT_LINE('El producto'|| v_nombre||' pertenece al fabricante '||v_fabricante);
+    ELSE
+        
+        DBMS_OUTPUT.PUT_LINE(V_NOMBRE|| 'NO TIENE FABRICANTE');
+    END IF;
+END;
+
+/**/
 
 
 
